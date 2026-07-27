@@ -9,7 +9,7 @@
         h1 { font-size: 1.25rem; }
         dl { display: grid; grid-template-columns: 6rem 1fr; row-gap: 0.25rem; font-size: 0.9rem; margin: 1rem 0; }
         dt { color: #666; }
-        .body-box { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-top: 1rem; white-space: pre-wrap; word-break: break-word; }
+        .body-frame { width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 6px; margin-top: 1rem; background: #fff; }
         .attachments { margin-top: 1rem; }
         .attachments li { font-size: 0.9rem; }
     </style>
@@ -28,7 +28,17 @@
     <dt>Tags</dt><dd th:text="${message.tags}"></dd>
 </dl>
 
-<div class="body-box" th:text="${message.body}"></div>
+<iframe class="body-frame" sandbox th:srcdoc="${message.body}"></iframe>
+<script>
+    // Auto-grow the sandboxed body iframe to fit its content, since it has no layout relationship
+    // to the parent page's flow.
+    document.querySelector('.body-frame').addEventListener('load', function () {
+        var doc = this.contentDocument;
+        if (doc && doc.body) {
+            this.style.height = doc.body.scrollHeight + 32 + 'px';
+        }
+    });
+</script>
 
 <div class="attachments" th:unless="${#lists.isEmpty(message.attachments)}">
     <strong>Attachments</strong>
