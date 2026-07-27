@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mailcatcher</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a1a; }
+        h1 { font-size: 1.25rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
+        th { color: #666; font-weight: 600; }
+        tr:hover { background: #f7f7f7; }
+        a { color: #1a5fb4; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .empty { color: #888; padding: 2rem 0; }
+        .tag { display: inline-block; background: #eef2ff; color: #3730a3; border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.75rem; margin-right: 0.25rem; }
+    </style>
+</head>
+<body>
+<h1>Mailcatcher — captured outbound mail</h1>
+
+<p th:if="${#lists.isEmpty(messages)}" class="empty">Nothing captured yet.</p>
+
+<table th:unless="${#lists.isEmpty(messages)}">
+    <thead>
+    <tr>
+        <th>Time</th>
+        <th>Endpoint</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Subject</th>
+        <th>Tags</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${messages}">
+        <td th:text="${m.createdAt}"></td>
+        <td th:text="${m.endpointLabel}"></td>
+        <td th:text="${m.senderName ?: m.senderHandle}"></td>
+        <td th:text="${m.toAddresses}"></td>
+        <td><a th:href="@{'/message/' + ${m.id}}" th:text="${m.subject}"></a></td>
+        <td>
+            <span class="tag" th:each="t : ${m.tagList}" th:text="${t}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

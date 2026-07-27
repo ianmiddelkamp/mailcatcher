@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${message.subject}">Message</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a1a; max-width: 900px; }
+        a.back { color: #1a5fb4; text-decoration: none; font-size: 0.9rem; }
+        h1 { font-size: 1.25rem; }
+        dl { display: grid; grid-template-columns: 6rem 1fr; row-gap: 0.25rem; font-size: 0.9rem; margin: 1rem 0; }
+        dt { color: #666; }
+        .body-box { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-top: 1rem; white-space: pre-wrap; word-break: break-word; }
+        .attachments { margin-top: 1rem; }
+        .attachments li { font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+<a class="back" href="/">&larr; back</a>
+<h1 th:text="${message.subject}"></h1>
+
+<dl>
+    <dt>Time</dt><dd th:text="${message.createdAt}"></dd>
+    <dt>Endpoint</dt><dd th:text="${message.endpointLabel}"></dd>
+    <dt>From</dt><dd th:text="${message.senderName} + ' &lt;' + ${message.senderHandle} + '&gt;'"></dd>
+    <dt>To</dt><dd th:text="${message.toAddresses}"></dd>
+    <dt>Cc</dt><dd th:text="${message.ccAddresses}"></dd>
+    <dt>Bcc</dt><dd th:text="${message.bccAddresses}"></dd>
+    <dt>Tags</dt><dd th:text="${message.tags}"></dd>
+</dl>
+
+<div class="body-box" th:text="${message.body}"></div>
+
+<div class="attachments" th:unless="${#lists.isEmpty(message.attachments)}">
+    <strong>Attachments</strong>
+    <ul>
+        <li th:each="a : ${message.attachments}">
+            <a th:href="@{'/attachment/' + ${a.id}}" th:text="${a.filename} + ' (' + ${a.size} + ' bytes)'"></a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
