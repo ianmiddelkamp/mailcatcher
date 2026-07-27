@@ -12,10 +12,18 @@
         .body-frame { width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 6px; margin-top: 1rem; background: #fff; }
         .attachments { margin-top: 1rem; }
         .attachments li { font-size: 0.9rem; }
+        .toolbar { display: flex; justify-content: space-between; align-items: baseline; }
+        .delete-btn { background: none; border: 1px solid #b91c1c; color: #b91c1c; border-radius: 4px; padding: 0.3rem 0.6rem; font-size: 0.85rem; cursor: pointer; }
+        .delete-btn:hover { background: #fef2f2; }
     </style>
 </head>
 <body>
-<a class="back" href="/">&larr; back</a>
+<div class="toolbar">
+    <a class="back" href="/">&larr; back</a>
+    <form th:action="@{'/message/' + ${message.id} + '/delete'}" method="post" onsubmit="return confirm('Delete this message?');">
+        <button type="submit" class="delete-btn">Delete</button>
+    </form>
+</div>
 <h1 th:text="${message.subject}"></h1>
 
 <dl>
