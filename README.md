@@ -1,7 +1,6 @@
 # mailcatcher
 
-A local stand-in for the [Front](https://front.com) API used by `monsterplow/shared`'s
-`FrontApp`/`FrontRequestHandler`. It implements just enough of Front's REST surface (message
+A local stand-in for the [Front](https://front.com) API. It implements just enough of Front's REST surface (message
 send endpoints) to capture outbound mail during development and show it on a simple web UI,
 instead of hitting the real Front API.
 
