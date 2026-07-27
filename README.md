@@ -6,6 +6,14 @@ instead of hitting the real Front API.
 
 ## Running
 
+Pull the published image from Docker Hub:
+
+```
+docker run -p 8091:8091 -v mailcatcher_data:/data ianmiddelkamp/mailcatcher
+```
+
+Or build it locally:
+
 ```
 docker build -t mailcatcher .
 docker run -p 8091:8091 -v mailcatcher_data:/data mailcatcher
@@ -13,13 +21,18 @@ docker run -p 8091:8091 -v mailcatcher_data:/data mailcatcher
 
 Then open http://localhost:8091/.
 
+Images are published automatically to [`ianmiddelkamp/mailcatcher`](https://hub.docker.com/r/ianmiddelkamp/mailcatcher)
+on every push to `main` (tagged `latest` and by commit SHA) and on `v*.*.*` tags (tagged by
+version) — see `.github/workflows/docker-publish.yml`.
+
 ## Wiring it up to a Front-based app
 
 Point the app at this service instead of the real Front API. In `monsterplow/shared`'s
-`FrontApp`, set the `FRONT_API_ENDPOINT_OVERRIDE` environment variable to this service's base
-URL (e.g. `http://mailcatcher:8091` inside a docker network) — when set, `FrontApp` sends all
+`FrontApp`, pass `api_endpoint`/`domain_endpoint` in the config array (e.g. via
+`front_settings.ini`'s `api_endpoint`/`domain_endpoint` keys) pointing at this service's base URL
+(e.g. `http://mailcatcher:8091` inside a docker network) — when set, `FrontApp` sends all
 `channels/*/messages` and `inboxes/*/imported_messages` requests here instead of
-`api2.frontapp.com`. Leaving it unset is a no-op (real Front API, unchanged behavior).
+`api2.frontapp.com`. Leaving them unset is a no-op (real Front API, unchanged behavior).
 
 ## What it captures
 
