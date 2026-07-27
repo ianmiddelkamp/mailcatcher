@@ -21,6 +21,9 @@ jobs:
           cache: maven
 
       - name: Run tests
+        env:
+          MAILCATCHER_DB_PATH: ${{ github.workspace }}/target/test-data/mailcatcher
+          MAILCATCHER_ATTACHMENTS_DIR: ${{ github.workspace }}/target/test-data/attachments
         run: |
           chmod +x mvnw
           ./mvnw -B test
